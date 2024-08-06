@@ -1,0 +1,327 @@
+1.Identify capital letter 
+%{
+	#include<stdio.h>
+%}
+
+%%
+[A-Z]+[\t\n ] { printf("%s",yytext); }
+.  ;
+%%
+
+int main( ) 
+{
+	printf("Enter some string with capital words in between\n");
+	yylex();
+}
+
+int yywrap( )
+{
+	return 1;
+}
+
+2.Digit or Not
+%{
+#include<stdio.h>
+%}
+
+%%
+[0-9]+ {printf("%s, is a digit", yytext);}
+.+ {printf("it is not a digit");}
+%%
+int main()
+{
+printf("\n Enter the digit :");	
+yylex();
+}
+int yywrap()
+{
+return 1;
+}
+
+3.Valid Mobile Number
+%{
+#include<stdio.h>
+%}
+
+%%
+[6-9][0-9]{9} {printf("%s, is a mobile number", yytext);}
+.+ {printf("The Mobile Number is Invalid");}
+%%
+int main()
+{
+printf("\n Enter the mobile number:");	
+yylex();
+}
+int yywrap()
+{
+return 1;
+}
+
+4.Vowels and consonants Count
+%{
+    int vow_count=0;
+    int const_count =0;
+%}
+ 
+%%
+[aeiouAEIOU] {vow_count++;}
+[a-zA-Z] {const_count++;}
+%%
+int yywrap(){}
+int main()
+{
+    printf("Enter the string of vowels and consonants:");
+    yylex();
+    printf("Number of vowels are:  %d\n", vow_count);
+    printf("Number of consonants are:  %d\n", const_count);
+    return 0;
+} 
+
+5.Recognize keywords and identifiers
+%{
+#include<stdio.h>
+%}
+%%
+if|else|while|int|switch|for|char { printf("\n%s is a KEYWORD", yytext);}
+[a-zA-Z0-9]+ { printf("\n%s is IDENTIFIER", yytext);}
+%%
+int yywrap( ){}
+int main()
+{
+yylex();
+}
+
+6.Positive or negetive count
+%{
+int positive_no = 0, negative_no = 0;
+%}
+%%
+[-][0-9]+ {negative_no++;}
+[0-9]+ {positive_no++;} 
+%%
+int yywrap(){}
+int main()
+{
+printf("enter number:\n");
+yylex();
+printf ("number of positive numbers = %d\n",positive_no);
+printf("number of negative numbers = %d\n",negative_no);
+return 0;
+}
+
+7.Word and number
+%{
+#include<stdio.h>
+%}
+%%
+[0-9]+ {printf("\n%s is number",yytext);}
+[a-zA-Z][a-zA-Z0-9]* {printf("\n%s is word",yytext);}
+%%
+int yywrap(){}
+int main()
+{
+yylex();
+}
+
+8.Accept string staring with vowels 
+%{ 
+%} 
+%% 
+[aeiouAEIOU].[a-zA-Z0-9.]+ {printf("Accepted");}
+[a-zA-Z0-9]+ {printf("Not Accepted");}
+%% 
+int yywrap(){}
+int main() 
+{ 
+printf("enter string=\n");
+yylex(); 
+}
+
+9.Length of longesr string 
+%{
+ #include <stdio.h>
+ #include <string.h>
+ int max_len = 0;
+%}
+%%
+[a-zA-Z]+ {
+ if (yyleng > max_len) {
+ max_len = yyleng;
+ }
+}
+.|\n {}
+%%
+int yywrap(){}
+int main() {
+ yylex();
+ printf("Length of longest word: %d\n", max_len);
+ return 0;
+}
+
+
+10.VAlid URL
+%{
+#include<stdio.h>
+%}
+%%
+[http://]+[www.]+[a-z]+".com" {printf("\n valid url\n");}
+.+ {printf("\n invalid url\n");}
+%%
+int yywrap()
+{}
+int main()
+{
+printf("enter url:\n");
+yylex();
+}
+
+11.VAlid DOB
+%{
+%}
+%% 
+[0-9][0-9]\/[0-1][0-9]\/[1-2][0-9]{3} { printf("valid");}
+.+ { printf("invalid");}
+%%
+int yywrap(){}
+int main()
+{
+yylex();
+}
+
+12.Identifier the NUmber, word,REational operator
+%{
+#include<stdio.h>
+%}
+%%
+[0-9]+ {printf("\n%s is number",yytext);}
+[a-zA-Z][a-zA-Z0-9]* {printf("\n%s is word",yytext);}
+">"|"<"|"<="|">="|"=="|"!=" {printf("\n%s is relational operator",yytext);}
+%%
+int yywrap(){}
+int main()
+{
+yylex();
+}
+
+13.Replace word
+%{
+#include <stdio.h>
+%}
+%%
+"apple" { printf("orange "); }
+. { printf("%c", yytext[0]); }
+%%
+int yywrap(){}
+int main() 
+{
+ yylex(); 
+}
+
+14.SImple Calculator
+%{
+#include <stdio.h>
+%}
+%%
+"apple" { printf("orange "); }
+. { printf("%c", yytext[0]); }
+%%
+int yywrap(){}
+int main() 
+{
+ yylex(); 
+}
+
+15.Valid Mail
+%{
+%}
+%%
+[a-zA-z0-9]+"@"[a-zA-Z]+".com" {printf("\n valid mail\n");}
+.+ {printf("\n invalid mail\n");}
+%%
+int yywrap(){}
+int main()
+{
+printf("enter the mail");
+yylex();
+}
+
+16.abc to ABC
+%{
+#include <ctype.h>
+%}
+%%
+[a-z] { printf("%c", toupper(yytext[0])); }
+.|\n { printf("%s", yytext); }
+%%
+int yywrap(){}
+int main() 
+{
+ yylex();
+ return 0;
+}
+
+17.Print all the constants
+%{
+int cons=0;
+%}
+digit [0-9]
+%%
+{digit}+"."{digit}+ {cons++;}
+{digit}+ {cons++;}
+.|\n {}
+%%
+int yywrap(){}
+int main()
+{
+printf("enter the code");
+yylex();
+printf("no.of constants %d",cons);
+return 0;
+}
+
+18.Count the number of Macros
+%{
+int macro, header; 
+%}
+%%
+"#define" {macro++;} 
+"#include" {header++;} 
+.|\n {}
+%%
+int yywrap(){}
+int main() 
+{ 
+printf("enter the string:\n");
+yylex(); 
+printf("Number of macros= %d \n Number of headers= %d\n",macro,header); 
+}
+
+19.Print HTML tag
+%{
+%}
+%%
+\<[^>]*\> {printf("%s\n is html tag",yytext);}
+.|\n;
+%%
+int yywrap(){}
+int main()
+{
+yylex();
+}
+
+20.Count comment lines
+%{
+#include<stdio.h>
+int c=0;
+%}
+%%
+"/"[a-zA-Z0-9]+"/" {c++;}
+"//"[a-zA-Z0-9]+"\n" {c++;}
+%%
+int yywrap( ){}
+int main()
+{
+printf("enter the comment lines:\n");
+yylex( );
+printf("The number of comment lines=%d\n",c);
+}
